@@ -1,4 +1,5 @@
 import streamlit as st
+from utils.loader import load_data
 
 st.set_page_config(
     page_title="Data Analysis Dashboard",
@@ -8,19 +9,35 @@ st.set_page_config(
 
 st.title("📊 Data Analysis Dashboard")
 
+st.sidebar.title("Dataset")
+
+uploaded_file = st.sidebar.file_uploader(
+    "Upload CSV or Excel",
+    type=["csv", "xlsx"]
+)
+
+if uploaded_file is not None:
+
+    df = load_data(uploaded_file)
+
+    st.session_state["df"] = df
+
+    st.sidebar.success("Dataset Loaded")
+
+else:
+
+    st.sidebar.info("Upload a dataset")
+
 st.markdown("""
-Welcome to the **Data Analysis Dashboard**.
+# Welcome 👋
 
-Use the sidebar to:
+This dashboard lets you
 
-- 📂 Upload Dataset
-- 📊 View Overview
-- 🧹 Clean Data
-- 🔍 Explore Data
-- 📈 Create Visualizations
-- 📥 Download Results
+- Upload CSV/Excel
+- Clean Data
+- Explore Data
+- Visualize Data
+- Download Results
 
----
+Use the sidebar to navigate.
 """)
-
-st.info("Select a page from the left sidebar to get started.")
